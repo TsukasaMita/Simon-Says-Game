@@ -4,12 +4,14 @@ let userClickedPattern = [];
 
 let level = 0;
 let started = false;
+let highScore = 0;
 
 $(document).keypress(function () {
   if (!started) {
     $("#level-title").text("Level " + level);
     nextSequence();
     started = true;
+    $("#start-button").hide();
   }
 });
 
@@ -18,6 +20,7 @@ $("#start-button").click(function () {
     $("#level-title").text("Level " + level);
     nextSequence();
     started = true;
+    $("#start-button").hide();
   }
 });
 
@@ -41,9 +44,13 @@ function checkAnswer(currentLevel) {
   } else {
     playSound("wrong");
     $("body").addClass("game-over");
-    $("#level-title").text(
-      "Game Over, Press Any Key or Start Button to Restart"
+    if (level - 1 > highScore) {
+      highScore = level - 1;
+    }
+    $("#level-title").html(
+      "Game Over, High Score: " + highScore + "<br>Press Any Key to Restart"
     );
+    $("#start-button").text("Restart");
 
     setTimeout(function () {
       $("body").removeClass("game-over");
@@ -84,4 +91,5 @@ function startOver() {
   level = 0;
   gamePattern = [];
   started = false;
+  $("#start-button").show();
 }
